@@ -26,7 +26,7 @@ void loop() {
   for (int servoIdx = firstServoIdx; servoIdx < (firstServoIdx + 3); servoIdx += 1) {
     Serial.println("Moving servo " + String(servoIdx) + " to " + String(foldAngle) + "...");
     folderServos[servoIdx - firstServoIdx].write(foldAngle);
-    delay(1500);
+    delay(2000);
     Serial.println("Resetting servo " + String(servoIdx) + " to " + String(initalServoPosition) + "...");
     folderServos[servoIdx - firstServoIdx].write(initalServoPosition);
     delay(3000);
