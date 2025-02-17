@@ -3,7 +3,6 @@
 Servo folderServos[3];
 int firstServoIdx = 7;
 int initalServoPosition = 0;
-const int BUTTON = 2;
 const int SERVO_LEFT = 7;
 const int SERVO_RIGHT = 8;
 const int SERVO_BOTTOM = 9;
@@ -21,17 +20,18 @@ void setup() {
 
 void loop() {
   int foldAngle = 90;
+  int servoIdx = -1;
 
-  if (digitalRead(BUTTON) == true) {
-    // put your main code here, to run repeatedly:
-    for (int servoIdx = firstServoIdx; servoIdx < (firstServoIdx + 3); servoIdx += 1) {
-      Serial.println("Moving servo " + String(servoIdx) + " to " + String(foldAngle) + "...");
-      folderServos[servoIdx - firstServoIdx].write(foldAngle);
-      delay(1500);
-      Serial.println("Resetting servo " + String(servoIdx) + " to " + String(initalServoPosition) + "...");
-      folderServos[servoIdx - firstServoIdx].write(initalServoPosition);
-      delay(3000);
-    }
-    Serial.println("Waiting for another T-Shirt...");
+  // put your main code here, to run repeatedly:
+  for (int servoIdx = firstServoIdx; servoIdx < (firstServoIdx + 3); servoIdx += 1) {
+    Serial.println("Moving servo " + String(servoIdx) + " to " + String(foldAngle) + "...");
+    folderServos[servoIdx - firstServoIdx].write(foldAngle);
+    delay(1500);
+    Serial.println("Resetting servo " + String(servoIdx) + " to " + String(initalServoPosition) + "...");
+    folderServos[servoIdx - firstServoIdx].write(initalServoPosition);
+    delay(3000);
   }
+  Serial.println("Waiting for another T-Shirt...");
+  delay(45000);
 }
+
