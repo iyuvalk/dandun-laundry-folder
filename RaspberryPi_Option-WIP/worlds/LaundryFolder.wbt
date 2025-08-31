@@ -1,0 +1,55 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/CardboardBox.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.4077792352089282 0.2177140804611162 0.8867449884275592 2.257258633014956
+  position 1.231514543919906 -1.270494561673674 2.0680891462327726
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 2 2
+}
+CardboardBox {
+  translation 0.07 0.28 0.00499887
+  rotation 0.9904931133189996 0.1138092368256526 0.07727127591025074 8.400885759507764e-17
+  name "MiddleStatic"
+  size 0.22 0.35 0.002
+  mass 0.001
+}
+Robot {
+  translation 0.21 0.47 0
+  children [
+    CardboardBox {
+      translation -0.42 -0.36 0.00499784
+      rotation -0.8235866611932011 -0.5626857504451629 -0.07134253815641294 2.968474230023939e-17
+      name "LeftFlap"
+      size 0.295 0.69 0.002
+      mass 0.0045
+    }
+    CardboardBox {
+      translation -0.14 -0.54 0.00499893
+      rotation 0.2920521915293275 -0.9549655035908885 0.052406148249205683 4.7335162854357747e-17
+      name "BottomFlap"
+      size 0.22 0.325 0.002
+      mass 0.001
+    }
+    CardboardBox {
+      translation 0.13 -0.36 0.00499789
+      rotation -0.9999489510948094 -2.4757511929962817e-15 0.010104217158719656 2.0848186463806517e-17
+      name "RightFlap"
+      size 0.285 0.69 0.002
+      mass 0.0045
+    }
+  ]
+  physics Physics {
+  }
+}
