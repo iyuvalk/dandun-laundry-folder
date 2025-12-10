@@ -8,8 +8,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.4077792352089282 0.2177140804611162 0.8867449884275592 2.257258633014956
-  position 1.231514543919906 -1.270494561673674 2.0680891462327726
+  orientation -0.4331718514710674 0.26581811692117846 0.8612217344038678 2.1692363477667147
+  position 0.959654463365891 -1.25271723655601 2.1998077505985494
 }
 TexturedBackground {
 }
@@ -19,14 +19,14 @@ RectangleArena {
   floorSize 2 2
 }
 CardboardBox {
-  translation 0.07 0.28 0.00499887
+  translation 0.07 0.28 0.114999
   rotation 0.9904931133189996 0.1138092368256526 0.07727127591025074 8.400885759507764e-17
   name "MiddleStatic"
   size 0.22 0.35 0.002
   mass 0.001
 }
 Robot {
-  translation 0.21 0.47 0
+  translation 0.21 0.47 0.1
   children [
     CardboardBox {
       translation -0.42 -0.36 0.00499784
@@ -35,6 +35,15 @@ Robot {
       size 0.295 0.69 0.002
       mass 0.0045
     }
+  ]
+  name "LeftFlapRobot"
+  physics Physics {
+  }
+}
+Robot {
+  translation 0.21 0.47 0.1
+  rotation 0 0 1 4.692820414042842e-06
+  children [
     CardboardBox {
       translation -0.14 -0.54 0.00499893
       rotation 0.2920521915293275 -0.9549655035908885 0.052406148249205683 4.7335162854357747e-17
@@ -42,14 +51,24 @@ Robot {
       size 0.22 0.325 0.002
       mass 0.001
     }
+  ]
+  name "BottomFlapRobot"
+}
+Robot {
+  children [
     CardboardBox {
-      translation 0.13 -0.36 0.00499789
+      translation 0.34 0.11 0.114998
       rotation -0.9999489510948094 -2.4757511929962817e-15 0.010104217158719656 2.0848186463806517e-17
       name "RightFlap"
       size 0.285 0.69 0.002
       mass 0.0045
     }
   ]
-  physics Physics {
-  }
+  name "RightFlapRobot"
+}
+CardboardBox {
+  translation 0.08 0.17 0.08
+  name "base"
+  size 0.695 0.695 0.02
+  mass 0.0045
 }
