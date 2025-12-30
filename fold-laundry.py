@@ -59,7 +59,7 @@ HTML_PAGE = """
       justify-content: center;
       align-items: center;
       height: 100vh;
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       color: white;
     }
 
@@ -79,47 +79,92 @@ HTML_PAGE = """
       cursor: pointer;
     }
 
-    #modeToggle {
+    /* ===== Switch ===== */
+
+    #modeSwitch {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      padding: 12px 20px;
-      font-size: 1em;
+      width: 150px;
+      height: 48px;
+      background: #333;
+      border-radius: 24px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    #modeSwitch .label {
+      font-size: 0.8em;
+      color: #aaa;
+      z-index: 2;
+    }
+
+    #modeSwitch .knob {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 40px;
+      height: 40px;
+      background: #666;
+      border-radius: 50%;
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    #modeSwitch.manual .knob {
+      transform: translateX(102px);
+      background: red;
+    }
+
+    #modeSwitch.manual .right {
+      color: white;
+    }
+
+    #modeSwitch:not(.manual) .left {
+      color: white;
     }
   </style>
 </head>
 <body>
 
 <button id="bigButton" disabled>FOLD</button>
-<button id="modeToggle">Automatic</button>
+
+<div id="modeSwitch">
+  <div class="knob"></div>
+  <span class="label left">AUTO</span>
+  <span class="label right">MANUAL</span>
+</div>
 
 <script>
 async function updateState() {
   const r = await fetch("/state");
   const s = await r.json();
 
-  const btn = document.getElementById("bigButton");
-  const toggle = document.getElementById("modeToggle");
+  const bigBtn = document.getElementById("bigButton");
+  const sw = document.getElementById("modeSwitch");
 
   if (s.mode === "manual") {
-    btn.disabled = false;
-    btn.classList.add("enabled");
-    toggle.textContent = "Manual";
+    bigBtn.disabled = false;
+    bigBtn.classList.add("enabled");
+    sw.classList.add("manual");
   } else {
-    btn.disabled = true;
-    btn.classList.remove("enabled");
-    toggle.textContent = "Automatic";
+    bigBtn.disabled = true;
+    bigBtn.classList.remove("enabled");
+    sw.classList.remove("manual");
   }
 }
 
-document.getElementById("modeToggle").onclick = async () => {
-  await fetch("/toggle", {method: "POST"});
+document.getElementById("modeSwitch").onclick = async () => {
+  await fetch("/toggle", { method: "POST" });
   updateState();
 };
 
 document.getElementById("bigButton").onclick = async () => {
-  await fetch("/fold", {method: "POST"});
+  await fetch("/fold", { method: "POST" });
 };
 
 updateState();
@@ -138,7 +183,7 @@ def log(message: str):
     line = f"[{ts}] {message}"
     print(line)
     with open(LOG_BASE, "a") as f:
-        f.write(line + "\n")
+        f.write(line + "\\n")
 
 
 def rotate_logs():
@@ -163,18 +208,11 @@ def move_servo(channel: int, angle: int):
     log(f"Servo {channel} -> {angle}")
     servo_controller.move_servo_position(channel, angle)
 
-
 # ============================================================
 # Servo logic
 # ============================================================
 
 def initialize_servos():
-    """
-    Run once at startup:
-    - Restart servo hat
-    - Move all servos to neutral (75°)
-    - Then move them to open positions
-    """
     log("Initializing servos")
 
     servo_controller.restart()
@@ -184,12 +222,7 @@ def initialize_servos():
 
     time.sleep(2)
 
-    open_position = {
-        0: 155,
-        1: 0,
-        2: 0,
-    }
-
+    open_position = {0: 155, 1: 0, 2: 0}
     for i in range(3):
         move_servo(i, open_position[i])
         time.sleep(1)
@@ -200,25 +233,21 @@ def initialize_servos():
 def folding_cycle():
     log("Folding cycle started")
 
-    # Right flap
     move_servo(0, 0)
     time.sleep(SLEEP_AFTER_CLOSED)
     move_servo(0, 155)
     time.sleep(SLEEP_BETWEEN_FLAPS)
 
-    # Left flap
     move_servo(1, 155)
     time.sleep(SLEEP_AFTER_CLOSED)
     move_servo(1, 0)
     time.sleep(SLEEP_BETWEEN_FLAPS)
 
-    # Bottom flap
     move_servo(2, 155)
     time.sleep(SLEEP_AFTER_CLOSED)
     move_servo(2, 0)
 
     log("Folding cycle finished")
-
 
 # ============================================================
 # Background automatic loop
@@ -239,7 +268,6 @@ def automatic_loop():
                     folding_cycle()
         else:
             time.sleep(0.5)
-
 
 # ============================================================
 # Flask routes
@@ -274,7 +302,6 @@ def fold_once():
     threading.Thread(target=folding_cycle, daemon=True).start()
     return ("", 204)
 
-
 # ============================================================
 # Main
 # ============================================================
@@ -288,4 +315,4 @@ if __name__ == "__main__":
     threading.Thread(target=automatic_loop, daemon=True).start()
 
     log("Web server started")
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=80)
