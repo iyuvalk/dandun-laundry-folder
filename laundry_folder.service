@@ -1,6 +1,5 @@
 [Service]
-ExecStartPre=/shared/scripts/restart_servo.py
-ExecStart=/shared/scripts/fold-laundry.sh
+ExecStart=/shared/scripts/dandun-laundry-folder/fold-laundry.py
 Restart=always
 [Install]
 WantedBy=multi-user.target
